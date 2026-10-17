@@ -1,0 +1,43 @@
+name: Build and push images
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/**'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [frontend, product-api, order-api]
+    steps:
+      - uses: actions/checkout@v5
+
+      - id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v3
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev --quiet
+
+      - name: Build and push immutable SHA tag
+        env:
+          PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          REGION: ${{ vars.GCP_REGION }}
+          REPOSITORY: ${{ vars.GAR_REPOSITORY }}
+          APP: ${{ matrix.app }}
+        run: |
+          IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${APP}"
+          docker build -t "${IMAGE}:${GITHUB_SHA}" -t "${IMAGE}:dev" "apps/${APP}"
+          docker push "${IMAGE}:${GITHUB_SHA}"
+          # Convenience tag for the starter Helm values; use SHA-only GitOps updates in a hardened lab.
+          docker push "${IMAGE}:dev"

@@ -1,0 +1,33 @@
+replicaCount: 2
+image:
+  repository: REGION-docker.pkg.dev/PROJECT_ID/gitops-apps/order-api
+  tag: dev
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8000
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+serviceAccount:
+  create: true
+  name: order-api
+  gcpServiceAccountEmail: REPLACE_WITH_GKE_WORKLOAD_SERVICE_ACCOUNT_EMAIL
+
+# Optional non-sensitive environment configuration.
+configMap:
+  create: true
+  name: ""
+  data: {}
+# Reference an existing Kubernetes Secret; do not put real credentials in values files.
+secret:
+  existingSecret: ""
+  env: []
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1

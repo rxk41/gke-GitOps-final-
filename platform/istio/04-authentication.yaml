@@ -1,0 +1,9 @@
+# STRICT requires every workload in apps to use an Istio sidecar and mTLS.
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: default-strict-mtls
+  namespace: apps
+spec:
+  mtls:
+    mode: STRICT

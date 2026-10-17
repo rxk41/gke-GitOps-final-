@@ -1,0 +1,10 @@
+replicaCount: 2
+image:
+  repository: REGION-docker.pkg.dev/PROJECT_ID/gitops-apps/frontend
+  tag: dev
+service:
+  type: LoadBalancer
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
