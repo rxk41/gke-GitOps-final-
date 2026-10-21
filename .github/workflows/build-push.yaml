@@ -17,6 +17,11 @@ jobs:
         app: [frontend, product-api, order-api]
     steps:
       - uses: actions/checkout@v5
+      - name: Debug Variables
+        run: |
+          echo "Provider set: ${{ vars.WIF_PROVIDER != '' }}"
+          echo "SA set: ${{ vars.WIF_SERVICE_ACCOUNT != '' }}"
+
 
       - id: auth
         uses: google-github-actions/auth@v3
