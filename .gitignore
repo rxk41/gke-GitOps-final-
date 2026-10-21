@@ -21,3 +21,9 @@ terraform.tfvars
 *.key
 service-account*.json
 credentials*.json
+
+
+# Local downloaded binaries and archives
+.tools/
+*.tar.gz
+*.zip

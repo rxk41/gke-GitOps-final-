@@ -29,9 +29,9 @@ module "artifact_registry" {
 }
 
 module "gke" {
-  source               = "../../modules/gke"
-  project_id           = var.project_id
-  region               = var.region
+  source     = "../../modules/gke"
+  project_id = var.project_id
+  # region               = var.region
   zone                 = var.zone
   cluster_name         = "gitops-dev-gke"
   network              = module.vpc.network_id

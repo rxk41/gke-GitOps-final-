@@ -1,3 +1,4 @@
+
 resource "google_container_cluster" "this" {
   project                  = var.project_id
   name                     = var.cluster_name
@@ -21,19 +22,11 @@ resource "google_container_cluster" "this" {
   release_channel {
     channel = "REGULAR"
   }
-
-  monitoring_config {
-    enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
-  }
-
-  logging_config {
-    enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
-  }
 }
 
 resource "google_container_node_pool" "default" {
   project        = var.project_id
-  name           = "default-node-pool"
+  name           = "app-pool"
   location       = var.zone
   cluster        = google_container_cluster.this.name
   node_count     = var.node_count
@@ -45,7 +38,10 @@ resource "google_container_node_pool" "default" {
     image_type      = "COS_CONTAINERD"
     disk_type       = "pd-standard"
     disk_size_gb    = var.disk_size_gb
-    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
 
     labels = {
       environment = "dev"

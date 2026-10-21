@@ -12,14 +12,20 @@ variable "sonar_secret_id" {
   type    = string
   default = "sonarcloud-token"
 }
+# variable "workload_identity_pool_id" {
+#   type    = string
+#   default = "github-actions-pool"
+# }
+# variable "workload_identity_provider_id" {
+#   type    = string
+#   default = "github-provider"
+# }
+
 variable "workload_identity_pool_id" {
   type    = string
-  default = "github-actions-pool"
+  default = "github-actions-pool-v2"
 }
-variable "workload_identity_provider_id" {
-  type    = string
-  default = "github-provider"
-}
+
 variable "github_actions_service_account_id" {
   type    = string
   default = "github-actions-ci"
@@ -27,4 +33,9 @@ variable "github_actions_service_account_id" {
 variable "gke_workload_service_account_id" {
   type    = string
   default = "store-app-workload"
+}
+
+variable "workload_identity_provider_id" {
+  type    = string
+  default = "github-provider-v2"
 }

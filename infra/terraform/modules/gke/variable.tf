@@ -2,24 +2,24 @@ variable "project_id" {
   type = string
 }
 
-variable "region" {
-  type = string
-}
-
 variable "zone" {
-  type = string
+  type    = string
+  default = "us-central1-a"
 }
 
 variable "cluster_name" {
-  type = string
+  type    = string
+  default = "gitops-dev-gke"
 }
 
 variable "network" {
-  type = string
+  type    = string
+  default = "gitops-dev-vpc"
 }
 
 variable "subnetwork" {
-  type = string
+  type    = string
+  default = "gitops-dev-subnet"
 }
 
 variable "node_service_account" {
@@ -38,5 +38,5 @@ variable "machine_type" {
 
 variable "disk_size_gb" {
   type    = number
-  default = 20
+  default = 25
 }

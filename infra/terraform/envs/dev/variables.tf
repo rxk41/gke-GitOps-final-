@@ -4,12 +4,12 @@ variable "project_id" {
 
 variable "region" {
   type    = string
-  default = "asia-south1"
+  default = "us-central1"
 }
 
 variable "zone" {
   type    = string
-  default = "asia-south1-a"
+  default = "us-central1-a"
 }
 
 variable "github_repository" {
@@ -34,4 +34,23 @@ variable "machine_type" {
 variable "disk_size_gb" {
   type    = number
   default = 20
+}
+
+variable "workload_identity_provider_id" {
+  type    = string
+  default = "github-provider-v2"
+}
+
+variable "workload_identity_pool_id" {
+  type    = string
+  default = "github-actions-pool-v2"
+}
+variable "network" {
+  type    = string
+  default = "gitops-dev-vpc"
+}
+
+variable "subnetwork" {
+  type    = string
+  default = "gitops-dev-subnet"
 }
