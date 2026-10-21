@@ -1,6 +1,6 @@
 replicaCount: 2
 image:
-  repository: REGION-docker.pkg.dev/PROJECT_ID/gitops-apps/product-api
+  repository: REGION-docker.pkg.dev/k8s-learning-510807/gitops-apps/product-api
   tag: dev
   pullPolicy: IfNotPresent
 service:

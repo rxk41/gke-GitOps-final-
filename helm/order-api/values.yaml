@@ -1,6 +1,6 @@
 replicaCount: 2
 image:
-  repository: REGION-docker.pkg.dev/PROJECT_ID/gitops-apps/order-api
+  repository: REGION-docker.pkg.dev/k8s-learning-510807/gitops-apps/order-api
   tag: dev
   pullPolicy: IfNotPresent
 service:
