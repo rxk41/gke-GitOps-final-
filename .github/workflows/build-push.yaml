@@ -1,4 +1,5 @@
 name: Build and push images
+
 on:
   push:
     branches: [main]
@@ -12,16 +13,25 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         app: [frontend, product-api, order-api]
+
     steps:
       - uses: actions/checkout@v5
+
       - name: Debug Variables
         run: |
           echo "Provider set: ${{ vars.WIF_PROVIDER != '' }}"
           echo "SA set: ${{ vars.WIF_SERVICE_ACCOUNT != '' }}"
 
+      - name: Debug GitHub Context
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Repository Owner: $GITHUB_REPOSITORY_OWNER"
+          echo "Ref: $GITHUB_REF"
+          echo "SHA: $GITHUB_SHA"
 
       - id: auth
         uses: google-github-actions/auth@v3
@@ -32,7 +42,9 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v3
 
       - name: Configure Docker
-        run: gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev --quiet
+        run: |
+          gcloud auth configure-docker \
+          ${{ vars.GCP_REGION }}-docker.pkg.dev --quiet
 
       - name: Build and push immutable SHA tag
         env:
@@ -42,7 +54,13 @@ jobs:
           APP: ${{ matrix.app }}
         run: |
           IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${APP}"
-          docker build -t "${IMAGE}:${GITHUB_SHA}" -t "${IMAGE}:dev" "apps/${APP}"
+
+          echo "Pushing image: ${IMAGE}"
+
+          docker build \
+            -t "${IMAGE}:${GITHUB_SHA}" \
+            -t "${IMAGE}:dev" \
+            "apps/${APP}"
+
           docker push "${IMAGE}:${GITHUB_SHA}"
-          # Convenience tag for the starter Helm values; use SHA-only GitOps updates in a hardened lab.
           docker push "${IMAGE}:dev"
