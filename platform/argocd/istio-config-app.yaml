@@ -1,3 +1,4 @@
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -8,14 +9,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/REPLACE_OWNER/REPLACE_REPO.git
+    repoURL: https://github.com/rxk41/gke-GitOps-final-.git
     targetRevision: main
     path: platform/istio
     directory:
       recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: apps
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

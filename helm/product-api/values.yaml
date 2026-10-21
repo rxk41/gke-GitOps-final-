@@ -16,7 +16,7 @@ resources:
 serviceAccount:
   create: true
   name: product-api
-  gcpServiceAccountEmail: REPLACE_WITH_GKE_WORKLOAD_SERVICE_ACCOUNT_EMAIL
+  gcpServiceAccountEmail: store-app-workload@k8s-learning-510807.iam.gserviceaccount.com
 
 # Optional non-sensitive environment configuration.
 configMap:

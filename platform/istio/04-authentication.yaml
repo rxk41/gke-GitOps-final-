@@ -6,4 +6,4 @@ metadata:
   namespace: apps
 spec:
   mtls:
-    mode: STRICT
+    mode: PERMISSIVE
