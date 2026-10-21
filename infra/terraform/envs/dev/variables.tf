@@ -21,3 +21,17 @@ variable "sonar_secret_id" {
   type    = string
   default = "sonarcloud-token"
 }
+variable "node_count" {
+  type    = number
+  default = 3
+}
+
+variable "machine_type" {
+  type    = string
+  default = "e2-standard-4"
+}
+
+variable "disk_size_gb" {
+  type    = number
+  default = 20
+}
