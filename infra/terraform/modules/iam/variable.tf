@@ -2,6 +2,7 @@ variable "project_id" { type = string }
 variable "github_repository" {
   type        = string
   description = "Exact OWNER/REPOSITORY allowed to federate from GitHub Actions."
+  default     = "rxk41/gke-GitOps-final-"
 }
 variable "region" { type = string }
 variable "artifact_repository_id" {
