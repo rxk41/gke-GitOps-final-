@@ -41,7 +41,3 @@ def get_product(product_id: int) -> dict:
     raise HTTPException(status_code=404, detail="Product not found")
 
 
-@app.get("/products/under-price", response_model=list[Product])
-def get_products_under_price(max_price: float = Query(ge=0)) -> list[dict]:
-    """Return every product whose price is less than or equal to max_price."""
-    return [product for product in SAMPLE_PRODUCTS if product["price"] <= max_price]
