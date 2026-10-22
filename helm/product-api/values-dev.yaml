@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
-  repository: REGION-docker.pkg.dev/k8s-learning-510807/gitops-apps/product-api
-  tag: dev
+  repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/product-api
+  tag: "product-api-v1.1"
 
 podDisruptionBudget:
   enabled: true

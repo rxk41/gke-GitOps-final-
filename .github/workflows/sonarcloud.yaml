@@ -56,7 +56,7 @@ jobs:
           git log -1 --oneline
 
       - name: SonarCloud scan and quality gate
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v7.1.0
         env:
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
         with:

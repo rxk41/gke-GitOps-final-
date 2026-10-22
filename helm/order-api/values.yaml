@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
-  repository: REGION-docker.pkg.dev/k8s-learning-510807/gitops-apps/order-api
-  tag: dev
+  repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/order-api
+  tag: "order-api-v1.1"
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
