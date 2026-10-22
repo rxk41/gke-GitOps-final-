@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -16,55 +17,72 @@ spec:
         app.kubernetes.io/name: postgres
     spec:
       terminationGracePeriodSeconds: 30
-      # nodeSelector:
-      #   {{- toYaml .Values.nodeSelector | nindent 8 }}
-      # tolerations:
-      #   {{- toYaml .Values.tolerations | nindent 8 }}
+
       containers:
         - name: postgres
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+
           ports:
             - name: postgres
               containerPort: 5432
+              protocol: TCP
+
           env:
             - name: POSTGRES_DB
               value: ecommerce
+
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.credentialsSecret }}
                   key: username
+
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.credentialsSecret }}
                   key: password
+
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
+
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{ toYaml .Values.resources | nindent 12 }}
+
           readinessProbe:
             exec:
-              command: ["sh", "-c", "pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
             initialDelaySeconds: 10
             periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 6
+
           livenessProbe:
             exec:
-              command: ["sh", "-c", "pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
             initialDelaySeconds: 30
             periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
+
+ 
   volumeClaimTemplates:
     - metadata:
         name: postgres-data
       spec:
-        accessModes: ["ReadWriteOnce"]
-        {{- if .Values.storage.storageClassName }}
-        storageClassName: {{ .Values.storage.storageClassName | quote }}
-        {{- end }}
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
             storage: {{ .Values.storage.size }}

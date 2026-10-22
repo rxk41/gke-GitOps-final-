@@ -1,5 +1,15 @@
 
+fullnameOverride: postgres
+
 replicaCount: 1
+
+image:
+  repository: postgres
+  tag: "16"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 5432
 
 storage:
   size: 5Gi
