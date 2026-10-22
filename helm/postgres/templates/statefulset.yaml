@@ -35,14 +35,14 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.credentialsSecret }}
-                  key: username
+                name: postgres-credentials
+                key: POSTGRES_USER
 
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.credentialsSecret }}
-                  key: password
+                   name: postgres-credentials
+                   key: POSTGRES_PASSWORD
 
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
