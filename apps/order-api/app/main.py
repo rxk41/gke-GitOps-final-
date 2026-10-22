@@ -11,7 +11,7 @@ NEXT_ORDER_ID = 1
 
 class OrderRequest(BaseModel):
     product_id: int = Field(gt=0)
-    quantity: int = Field(gt=0, le=100)
+    quantity: int = Field(gt=0, le=50)
 
 
 class Order(BaseModel):

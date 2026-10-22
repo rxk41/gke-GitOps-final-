@@ -1,3 +1,4 @@
+
 name: Build and push images
 
 on:
@@ -16,7 +17,13 @@ jobs:
 
     strategy:
       matrix:
-        app: [frontend, product-api, order-api]
+        include:
+          - app: frontend
+            version_tag: frontend-v1.1
+          - app: product-api
+            version_tag: product-api-v1.1
+          - app: order-api
+            version_tag: order-api-v1.1
 
     steps:
       - uses: actions/checkout@v5
@@ -44,23 +51,26 @@ jobs:
       - name: Configure Docker
         run: |
           gcloud auth configure-docker \
-          ${{ vars.GCP_REGION }}-docker.pkg.dev --quiet
+            "${{ vars.GCP_REGION }}-docker.pkg.dev" --quiet
 
-      - name: Build and push immutable SHA tag
+      - name: Build and push images
         env:
           PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
           REGION: ${{ vars.GCP_REGION }}
           REPOSITORY: ${{ vars.GAR_REPOSITORY }}
           APP: ${{ matrix.app }}
+          VERSION_TAG: ${{ matrix.version_tag }}
         run: |
           IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${APP}"
 
-          echo "Pushing image: ${IMAGE}"
+          echo "Building image: ${IMAGE}"
+          echo "Version tag: ${VERSION_TAG}"
+          echo "Commit tag: ${GITHUB_SHA}"
 
           docker build \
             -t "${IMAGE}:${GITHUB_SHA}" \
-            -t "${IMAGE}:dev" \
+            -t "${IMAGE}:${VERSION_TAG}" \
             "apps/${APP}"
 
           docker push "${IMAGE}:${GITHUB_SHA}"
-          docker push "${IMAGE}:dev"
+          docker push "${IMAGE}:${VERSION_TAG}"

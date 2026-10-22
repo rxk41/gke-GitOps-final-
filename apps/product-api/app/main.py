@@ -6,13 +6,13 @@ app = FastAPI(title="Product API", version="1.0.0")
 # Demo data only. Replace with a repository/database layer in the persistence exercise.
 SAMPLE_PRODUCTS = [
     {"id": 1, "name": "Notebook", "price": 4.50},
-    {"id": 2, "name": "Pen", "price": 1.25},
+    {"id": 2, "name": "Pen", "price": 2.25},
 ]
 
 
 class Product(BaseModel):
     id: int = Field(gt=0)
-    name: str = Field(min_length=1, max_length=120)
+    name: str = Field(min_length=1, max_length=110)
     price: float = Field(ge=0, allow_inf_nan=False)
 
 
