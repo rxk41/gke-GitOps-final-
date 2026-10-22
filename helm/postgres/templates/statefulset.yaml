@@ -16,10 +16,10 @@ spec:
         app.kubernetes.io/name: postgres
     spec:
       terminationGracePeriodSeconds: 30
-      nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
-      tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+      # nodeSelector:
+      #   {{- toYaml .Values.nodeSelector | nindent 8 }}
+      # tolerations:
+      #   {{- toYaml .Values.tolerations | nindent 8 }}
       containers:
         - name: postgres
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
