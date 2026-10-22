@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,13 +15,11 @@ spec:
       labels:
         app.kubernetes.io/name: frontend
     spec:
-      {{- if .Values.configMap.create }}
-      # ConfigMap is loaded as environment variables below.
-      {{- end }}
       containers:
         - name: frontend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+
           envFrom:
             - configMapRef:
                 name: {{ default (printf "%s-config" .Release.Name) .Values.configMap.name }}
@@ -30,12 +29,34 @@ spec:
                 name: {{ .Values.secret.existingSecret }}
                 optional: false
             {{- end }}
+
           ports:
             - name: http
               containerPort: 80
+              protocol: TCP
+
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: 30
+            periodSeconds: 5
+
           readinessProbe:
             httpGet:
               path: /
               port: http
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+
           resources:
 {{ toYaml .Values.resources | indent 12 }}

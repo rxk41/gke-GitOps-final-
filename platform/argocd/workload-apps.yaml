@@ -11,7 +11,7 @@ spec:
     path: helm/frontend
     helm:
       valueFiles:
-        - values-dev.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: apps
@@ -35,7 +35,7 @@ spec:
     path: helm/product-api
     helm:
       valueFiles:
-        - values-dev.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: apps
@@ -59,7 +59,7 @@ spec:
     path: helm/order-api
     helm:
       valueFiles:
-        - values-dev.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: apps
@@ -83,7 +83,7 @@ spec:
     path: helm/postgres
     helm:
       valueFiles:
-        - values-dev.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: apps
