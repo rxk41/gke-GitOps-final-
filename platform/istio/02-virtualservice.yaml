@@ -19,7 +19,7 @@ spec:
         - destination:
             host: product-api.apps.svc.cluster.local
             port:
-              number: 80
+              number: 8000
     - name: order-api
       match:
         - uri:
@@ -30,7 +30,7 @@ spec:
         - destination:
             host: order-api.apps.svc.cluster.local
             port:
-              number: 80
+              number: 8000
     - name: frontend
       route:
         - destination:
