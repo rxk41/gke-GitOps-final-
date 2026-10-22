@@ -1,7 +1,10 @@
+
 replicaCount: 1
+
 storage:
   size: 5Gi
   storageClassName: ""
+
 resources:
   requests:
     cpu: 100m
@@ -9,16 +12,9 @@ resources:
   limits:
     cpu: 500m
     memory: 512Mi
+
 credentialsSecret: postgres-credentials
 
-# Schedule PostgreSQL only onto the dedicated Terraform node pool.
-nodeSelector:
-  workload: postgres
-tolerations:
-  - key: dedicated
-    operator: Equal
-    value: postgres
-    effect: NoSchedule
 podDisruptionBudget:
   enabled: true
   minAvailable: 1
