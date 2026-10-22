@@ -1,8 +1,9 @@
-# replicaCount: 2
-# image:
-#   repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/product-api
-#   tag: "product-api-v1.1"
+replicaCount: 2
+image:
+  repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/product-api
+  tag: "product-api-v1.1"
+  pullPolicy: IfNotPresent
 
-# podDisruptionBudget:
-#   enabled: true
-#   minAvailable: 1
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
