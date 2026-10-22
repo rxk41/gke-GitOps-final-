@@ -8,9 +8,11 @@ metadata:
 spec:
   serviceName: {{ .Values.fullnameOverride }}
   replicas: {{ .Values.replicaCount }}
+
   selector:
     matchLabels:
       app.kubernetes.io/name: postgres
+
   template:
     metadata:
       labels:
@@ -35,14 +37,14 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                name: postgres-credentials
-                key: POSTGRES_USER
+                  name: postgres-credentials
+                  key: POSTGRES_USER
 
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                   name: postgres-credentials
-                   key: POSTGRES_PASSWORD
+                  name: postgres-credentials
+                  key: POSTGRES_PASSWORD
 
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
@@ -76,7 +78,6 @@ spec:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
 
- 
   volumeClaimTemplates:
     - metadata:
         name: postgres-data
