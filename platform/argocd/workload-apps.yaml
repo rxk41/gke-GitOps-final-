@@ -30,7 +30,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/rxk41/gke-GitOps-final-.gitt
+    repoURL: https://github.com/rxk41/gke-GitOps-final-.git
     targetRevision: main
     path: helm/product-api
     helm:
@@ -78,7 +78,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/REPLACE_OWNER/REPLACE_REPO.git
+    repoURL: https://github.com/rxk41/gke-GitOps-final-.git
     targetRevision: main
     path: helm/postgres
     helm:
