@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 from psycopg.errors import ForeignKeyViolation
+import os
 
 from app.database import get_connection
 
@@ -20,15 +21,17 @@ class Order(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok",
-            "service": "order-api",
-            "version": "v1.2"}
+    return {
+        "status": "ok",
+        "service": "order-api",
+        "version": os.getenv("APP_VERSION", "unknown")
+    }
 
 @app.get("/version")
 def version():
     return {
         "service": "order-api",
-        "version": "v1.2"
+        "version": os.getenv("APP_VERSION", "unknown")
     }
 @app.get("/orders", response_model=list[Order])
 def list_orders():

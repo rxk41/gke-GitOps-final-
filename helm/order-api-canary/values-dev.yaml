@@ -13,6 +13,7 @@ configMap:
     DB_HOST: "postgres"
     DB_PORT: "5432"
     DB_NAME: "ecommerce"
+    APP_VERSION: "v1.2"
 
 secret:
   existingSecret: "postgres-credentials"
