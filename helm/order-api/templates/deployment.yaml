@@ -4,16 +4,19 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     app.kubernetes.io/name: order-api
+    app.kubernetes.io/instance: {{ .Release.Name }}
     version: v1
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: order-api
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: order-api
+        app.kubernetes.io/instance: {{ .Release.Name }}
         version: v1
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
@@ -33,13 +36,18 @@ spec:
           ports:
             - name: http
               containerPort: 8000
+              protocol: TCP
           readinessProbe:
             httpGet:
               path: /health
               port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
               port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}

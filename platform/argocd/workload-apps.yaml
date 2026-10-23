@@ -21,30 +21,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: product-api
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/rxk41/gke-GitOps-final-.git
-    targetRevision: main
-    path: helm/product-api
-    helm:
-      valueFiles:
-        - values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: apps
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -57,30 +34,6 @@ spec:
     repoURL: https://github.com/rxk41/gke-GitOps-final-.git
     targetRevision: main
     path: helm/order-api
-    helm:
-      valueFiles:
-        - values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: apps
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: order-api-canary
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/rxk41/gke-GitOps-final-.git
-    targetRevision: main
-    path: helm/order-api-canary
     helm:
       valueFiles:
         - values.yaml

@@ -1,22 +1,3 @@
-
-apiVersion: networking.istio.io/v1
-kind: DestinationRule
-metadata:
-  name: product-api-mtls
-  namespace: apps
-spec:
-  host: product-api.apps.svc.cluster.local
-  trafficPolicy:
-    tls:
-      mode: ISTIO_MUTUAL
-  subsets:
-    - name: stable
-      labels:
-        version: v1
-    - name: canary
-      labels:
-        version: v2
----
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
@@ -27,13 +8,6 @@ spec:
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL
-  subsets:
-    - name: stable
-      labels:
-        version: v1
-    - name: canary
-      labels:
-        version: v2
 ---
 apiVersion: networking.istio.io/v1
 kind: DestinationRule

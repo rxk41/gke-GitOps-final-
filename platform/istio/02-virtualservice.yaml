@@ -9,45 +9,18 @@ spec:
   gateways:
     - store-gateway
   http:
-    - name: product-api
-      match:
-        - uri:
-            prefix: /api/products
-      rewrite:
-        uri: /products
-      route:
-        - destination:
-            host: product-api.apps.svc.cluster.local
-            subset: stable
-            port:
-              number: 8000
-          weight: 80
-        - destination:
-            host: product-api.apps.svc.cluster.local
-            subset: canary
-            port:
-              number: 8000
-          weight: 20
-
     - name: order-api
       match:
         - uri:
-            prefix: /api/version  
+            prefix: /api/version
       rewrite:
         uri: /version
       route:
         - destination:
             host: order-api.apps.svc.cluster.local
-            subset: stable
             port:
               number: 8000
-          weight: 80
-        - destination:
-            host: order-api.apps.svc.cluster.local
-            subset: canary
-            port:
-              number: 8000
-          weight: 20
+          weight: 100
 
     - name: frontend
       route:
