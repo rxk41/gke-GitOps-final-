@@ -4,12 +4,12 @@ from psycopg.errors import ForeignKeyViolation
 
 from app.database import get_connection
 
-app = FastAPI(title="Order API", version="1.0.0")
+app = FastAPI(title="Order API new", version="1.0.0")
 
 
 class OrderRequest(BaseModel):
     product_id: int = Field(gt=0)
-    quantity: int = Field(gt=0, le=50)
+    quantity: int = Field(gt=0, le=100)
 
 
 class Order(BaseModel):
