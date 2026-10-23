@@ -24,6 +24,8 @@ jobs:
             version_tag: product-api-v1.1
           - app: order-api
             version_tag: order-api-v1.1
+          - app: order-api
+            version_tag: order-api-v1.2
 
     steps:
       - uses: actions/checkout@v5
