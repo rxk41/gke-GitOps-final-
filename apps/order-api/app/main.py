@@ -22,13 +22,13 @@ class Order(BaseModel):
 def health():
     return {"status": "ok",
             "service": "order-api",
-            "version": "v1.1"}
+            "version": "v1.2"}
 
 @app.get("/version")
 def version():
     return {
         "service": "order-api",
-        "version": "v1.1"
+        "version": "v1.2"
     }
 @app.get("/orders", response_model=list[Order])
 def list_orders():
