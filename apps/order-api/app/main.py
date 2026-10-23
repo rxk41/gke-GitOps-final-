@@ -20,7 +20,9 @@ class Order(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "order-api"}
+    return {"status": "ok",
+            "service": "order-api",
+            "version": "v1.1"}
 
 
 @app.get("/orders", response_model=list[Order])
