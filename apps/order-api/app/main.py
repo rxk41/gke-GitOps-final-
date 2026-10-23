@@ -24,7 +24,12 @@ def health():
             "service": "order-api",
             "version": "v1.1"}
 
-
+@app.get("/version")
+def version():
+    return {
+        "service": "order-api",
+        "version": "v1.1"
+    }
 @app.get("/orders", response_model=list[Order])
 def list_orders():
     with get_connection() as conn:
