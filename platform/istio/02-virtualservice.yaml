@@ -32,9 +32,9 @@ spec:
     - name: order-api
       match:
         - uri:
-            prefix: /api/orders
+            prefix: /api/version  
       rewrite:
-        uri: /orders
+        uri: /version
       route:
         - destination:
             host: order-api.apps.svc.cluster.local
