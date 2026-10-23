@@ -1,12 +1,10 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
+from psycopg.errors import ForeignKeyViolation
+
+from app.database import get_connection
 
 app = FastAPI(title="Order API", version="1.0.0")
-
-# Demo-only in-memory store: orders reset when the process restarts and are not shared
-# between replicas. PostgreSQL integration is a separate application-development step.
-ORDERS: list[dict] = []
-NEXT_ORDER_ID = 1
 
 
 class OrderRequest(BaseModel):
@@ -21,27 +19,55 @@ class Order(BaseModel):
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
+def health():
     return {"status": "ok", "service": "order-api"}
 
 
 @app.get("/orders", response_model=list[Order])
-def list_orders() -> list[dict]:
-    return ORDERS
+def list_orders():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT id, product_id, quantity FROM orders ORDER BY id"
+            )
+            return cur.fetchall()
 
 
 @app.get("/orders/{order_id}", response_model=Order)
-def get_order(order_id: int) -> dict:
-    for order in ORDERS:
-        if order["id"] == order_id:
-            return order
-    raise HTTPException(status_code=404, detail="Order not found")
+def get_order(order_id: int):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id, product_id, quantity
+                FROM orders
+                WHERE id = %s
+                """,
+                (order_id,),
+            )
+            order = cur.fetchone()
+
+    if order is None:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    return order
 
 
 @app.post("/orders", response_model=Order, status_code=status.HTTP_201_CREATED)
-def create_order(order: OrderRequest) -> dict:
-    global NEXT_ORDER_ID
-    created = {"id": NEXT_ORDER_ID, **order.model_dump()}
-    ORDERS.append(created)
-    NEXT_ORDER_ID += 1
-    return created
+def create_order(order: OrderRequest):
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO orders (product_id, quantity)
+                    VALUES (%s, %s)
+                    RETURNING id, product_id, quantity
+                    """,
+                    (order.product_id, order.quantity),
+                )
+                return cur.fetchone()
+    except ForeignKeyViolation as exc:
+        raise HTTPException(
+            status_code=404, detail="Product not found"
+        ) from exc

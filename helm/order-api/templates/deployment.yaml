@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     app.kubernetes.io/name: order-api
+    version: v1
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -13,11 +14,9 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: order-api
+        version: v1
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
-      {{- if .Values.configMap.create }}
-      # ConfigMap is loaded as environment variables below.
-      {{- end }}
       containers:
         - name: api
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

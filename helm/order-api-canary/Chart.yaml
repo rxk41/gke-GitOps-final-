@@ -1,0 +1,7 @@
+
+apiVersion: v2
+name: order-api-canary
+description: Canary Helm chart for Order API
+type: application
+version: 0.1.0
+appVersion: "1.2"

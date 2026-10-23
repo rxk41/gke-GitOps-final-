@@ -1,0 +1,44 @@
+replicaCount: 1
+nameOverride: "product-api-canary"
+image:
+  repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/product-api
+  tag: "product-api-v1.2"
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8000
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+serviceAccount:
+  create: true
+  name: product-api
+  gcpServiceAccountEmail: store-app-workload@k8s-learning-510807.iam.gserviceaccount.com
+
+# Optional non-sensitive environment configuration.
+# configMap:
+#   create: true
+#   name: ""
+#   data: {}
+# # Reference an existing Kubernetes Secret; do not put real credentials in values files.
+# secret:
+#   existingSecret: ""
+#   env: []
+
+podDisruptionBudget:
+  enabled: false
+configMap:
+  create: true
+  name: "product-api-canary-config"
+  data:
+    DB_HOST: "postgres"
+    DB_PORT: "5432"
+    DB_NAME: "ecommerce"
+
+secret:
+  existingSecret: "postgres-credentials"
+  env: []

@@ -1,0 +1,23 @@
+replicaCount: 1
+nameOverride: "order-api-canary"
+image:
+  repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/order-api
+  tag: "order-api-v1.2"
+  pullPolicy: IfNotPresent
+podDisruptionBudget:
+  enabled: false
+configMap:
+  create: true
+  name: "order-api-canary-config"
+  data:
+    DB_HOST: "postgres"
+    DB_PORT: "5432"
+    DB_NAME: "ecommerce"
+
+secret:
+  existingSecret: "postgres-credentials"
+  env: []
+serviceAccount:
+  create: false
+  name: order-api
+  gcpServiceAccountEmail: "store-app-workload@k8s-learning-510807.iam.gserviceaccount.com"

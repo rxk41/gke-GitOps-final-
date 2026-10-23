@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/product-api
-  tag: "product-api-v1.1"
+  tag: "product-api-v1.2"
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
@@ -19,15 +19,26 @@ serviceAccount:
   gcpServiceAccountEmail: store-app-workload@k8s-learning-510807.iam.gserviceaccount.com
 
 # Optional non-sensitive environment configuration.
-configMap:
-  create: true
-  name: ""
-  data: {}
-# Reference an existing Kubernetes Secret; do not put real credentials in values files.
-secret:
-  existingSecret: ""
-  env: []
+# configMap:
+#   create: true
+#   name: ""
+#   data: {}
+# # Reference an existing Kubernetes Secret; do not put real credentials in values files.
+# secret:
+#   existingSecret: ""
+#   env: []
 
-podDisruptionBudget:
-  enabled: true
-  minAvailable: 1
+# podDisruptionBudget:
+#   enabled: true
+#   minAvailable: 1
+# configMap:
+#   create: true
+#   name: "product-api-config"
+#   data:
+#     DB_HOST: "postgres"
+#     DB_PORT: "5432"
+#     DB_NAME: "ecommerce"
+
+# secret:
+#   existingSecret: "postgres-credentials"
+#   env: []

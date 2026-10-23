@@ -1,8 +1,30 @@
 replicaCount: 2
+
 image:
   repository: us-central1-docker.pkg.dev/k8s-learning-510807/gitops-apps/order-api
   tag: "order-api-v1.1"
   pullPolicy: IfNotPresent
+
 podDisruptionBudget:
   enabled: true
   minAvailable: 1
+
+configMap:
+  create: true
+  name: "order-api-config"
+  data:
+    DB_HOST: "postgres"
+    DB_PORT: "5432"
+    DB_NAME: "ecommerce"
+
+secret:
+  existingSecret: "postgres-credentials"
+  env: []
+
+serviceAccount:
+  create: true
+  name: order-api
+  gcpServiceAccountEmail: "store-app-workload@k8s-learning-510807.iam.gserviceaccount.com"
+service:
+  type: ClusterIP
+  port: 8000

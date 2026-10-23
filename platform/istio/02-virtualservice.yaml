@@ -18,8 +18,17 @@ spec:
       route:
         - destination:
             host: product-api.apps.svc.cluster.local
+            subset: stable
             port:
               number: 8000
+          weight: 80
+        - destination:
+            host: product-api.apps.svc.cluster.local
+            subset: canary
+            port:
+              number: 8000
+          weight: 20
+
     - name: order-api
       match:
         - uri:
@@ -29,11 +38,21 @@ spec:
       route:
         - destination:
             host: order-api.apps.svc.cluster.local
+            subset: stable
             port:
               number: 8000
+          weight: 80
+        - destination:
+            host: order-api.apps.svc.cluster.local
+            subset: canary
+            port:
+              number: 8000
+          weight: 20
+
     - name: frontend
       route:
         - destination:
             host: frontend.apps.svc.cluster.local
             port:
               number: 80
+          weight: 100
